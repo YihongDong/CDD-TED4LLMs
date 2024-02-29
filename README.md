@@ -7,7 +7,7 @@ from datasets import load_from_disk
 dataset = load_from_disk('./CodeForces2305')
 ```
 ## Dataset Information
-**CodeForces2305** comprises 90 of the easiest level programming problems collected from the CodeForces website since May 2023, as well as 10 problems of the same type from March 2023 to April 2023 for optional few-shot prompting. We report the zero-shot results of ChatGPTs on CodeForces2305 dataset。
+**CodeForces2305** comprises 90 of the easiest level programming problems collected from the CodeForces website since May 2023, as well as 10 problems of the same type from March 2023 to April 2023 for optional few-shot prompting. We report the zero-shot results of ChatGPTs on CodeForces2305 dataset in the paper。
  
 ## Citation
 ```
