@@ -1,5 +1,5 @@
 # CDD-TED4LLMs
-In progress...
+*The code and data are organized for public release in progress...*
 
 ## Load Dataset
 ```Python
