@@ -1,8 +1,11 @@
-# CDD-TED4LLMs
+# Generalization or Memorization: Data Contamination and Trustworthy Evaluation for Large Language Models
+[**Paper**](https://arxiv.org/abs/2402.15938)
+
 *The code and datasets are organized for public release in progress...*
 
 ## Load Dataset
 ```Python
+# pip install datasets
 from datasets import load_from_disk
 dataset = load_from_disk('./CodeForces2305')
 ```
