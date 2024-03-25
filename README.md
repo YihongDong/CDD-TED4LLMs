@@ -12,6 +12,9 @@ dataset = load_from_disk('./CodeForces2305')
 
 ## Evaluate CodeForces2305
 ```bash
+# generate
+python Call_ChatGPT.py --output_path path_to_generation_file.json 
+# evaluate
 python evaluate.evaluate_codeforces.py --input_path path_to_generation_file.json
 ```
 
