@@ -1,7 +1,7 @@
 # Generalization or Memorization: Data Contamination and Trustworthy Evaluation for Large Language Models
 [**Paper**](https://arxiv.org/abs/2402.15938)
 
-*The code and datasets are organized for public release in two weeks...*
+*The code and datasets are organized for public release in progress...*
 
 ## Load Dataset
 ```Python
