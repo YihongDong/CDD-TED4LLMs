@@ -1,6 +1,16 @@
 # Generalization or Memorization: Data Contamination and Trustworthy Evaluation for Large Language Models
 [**Paper**](https://arxiv.org/abs/2402.15938) (Accepted to ACL)
 
+## Evaluate CDD
+```bash
+python CDD.py
+```
+
+## Evaluate TED
+```bash
+python TED.py
+```
+
 ## Load Dataset
 ```Python
 # pip install datasets
