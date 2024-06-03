@@ -69,7 +69,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--alpha', type=float, default='0.05')
 parser.add_argument('--xi', type=float, default='0.01')
 parser.add_argument('--input_path', type=str, default='./DETCON')
-
+parser.add_argument('--real_world_applications', action='store_true', default=False)
 parser.add_argument('--model', type=str, default='DETCON')
 
 args = parser.parse_args()
@@ -82,26 +82,46 @@ if __name__ == '__main__':
         from transformers import AutoTokenizer
         codellama_tokenizer = AutoTokenizer.from_pretrained("codellama/CodeLlama-7b-hf")
         codegen_tokenizer = AutoTokenizer.from_pretrained("Salesforce/codegen-6B-multi")
+
+    if not args.real_world_applications:
+        dataset = load_from_disk(args.input_path)['code generation original']
+    
+        Results=[]
+        Labels = []
+        for task in dataset:
+            if task['model_name'] == "CodeLlama-7b":
+                tokenizer = codellama_tokenizer
+            elif task['model_name'] == "codegen-6B-multi":
+                tokenizer = codegen_tokenizer
+                
+            dist, ml = get_edit_distance_distribution_star(task['samples'], task['greedy_sample'], tokenizer)
+            peak = calculate_ratio(dist, args.alpha*ml) 
+            Results.append(peak)
+            Labels.append(task['label'])
         
-    dataset = load_from_disk(args.input_path)['code generation original']
-    
-    Results=[]
-    Labels = []
-    for task in dataset:
-        if task['model_name'] == "CodeLlama-7b":
-            tokenizer = codellama_tokenizer
-        elif task['model_name'] == "codegen-6B-multi":
-            tokenizer = codegen_tokenizer
-            
-        dist, ml = get_edit_distance_distribution_star(task['samples'], task['greedy_sample'], tokenizer)
-        peaked = calculate_ratio(dist, args.alpha*ml) 
-        Results.append(peaked)
-        Labels.append(task['label'])
-    
-    metric = evaluate_classification(Labels, [i>args.xi for i in Results], Results)
-    print(f'Accuracy = {metric["Accuracy"]}')
-    print(f'Precision = {metric["Precision"]}')
-    print(f'Recall = {metric["Recall"]}')
-    print(f'F1Score = {metric["F1 Score"]}')
-    print(f'AUC = {metric["AUC"]}')
+        metric = evaluate_classification(Labels, [i>args.xi for i in Results], Results)
+        print(f'Accuracy = {metric["Accuracy"]}')
+        print(f'Precision = {metric["Precision"]}')
+        print(f'Recall = {metric["Recall"]}')
+        print(f'F1Score = {metric["F1 Score"]}')
+        print(f'AUC = {metric["AUC"]}')
+    else:
+        tasks = json.load(open(args.input_path, 'r'))
+        # enhance the detection precision
+        args.alpha = 0
+        args.xi = 0.2
+
+        Results=[]
+        for task in tasks:
+            # task['samples'] temperature = 0.8 num = 50
+            # task['gready_sample'] temperature = 0 num = 1
+            dist, ml = get_edit_distance_distribution_star(task['samples'], task['greedy_sample'], tokenizer)
+            peak = calculate_ratio(dist, args.alpha*ml) 
+            Peaks.append(peak)
+        Results = [i>args.xi for i in Peaks]
+        
+        print("Contamination Ratio:", sum(Results)/len(Results))
+        print("Avg. Peak:", sum(Peaks)/len(Peaks))
+
+
 
