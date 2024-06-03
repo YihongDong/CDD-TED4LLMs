@@ -111,7 +111,7 @@ if __name__ == '__main__':
         args.alpha = 0
         args.xi = 0.2
 
-        Results=[]
+        Peaks=[]
         for task in tasks:
             # task['samples'] temperature = 0.8 num = 50
             # task['gready_sample'] temperature = 0 num = 1
