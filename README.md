@@ -33,6 +33,7 @@ python evaluate.evaluate_codeforces.py --input_path path_to_generation_file.json
 Given that many researchers are interested in the models that we finetuned to simulate data contamination, we have preliminarily organized the model weights and outputs, totaling about 300GB. Considering the large amount of data, we have selected about 26GB of data to package it so that it can cover the settings in the paper. We have divided the data into two parts, each stored in Google Drive, the links are as follows: 
 
 https://drive.google.com/file/d/1FTakU4HIXz00rg8GQQjM7jRw2hBWMsHu/view
+
 https://drive.google.com/file/d/1uBsnVoVCqT8VXA-4REClR6FS8AOab2X9/view
  
 ## Citation
