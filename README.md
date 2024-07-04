@@ -35,6 +35,11 @@ Given that many researchers are interested in the models that we finetuned to si
 https://drive.google.com/file/d/1FTakU4HIXz00rg8GQQjM7jRw2hBWMsHu/view
 
 https://drive.google.com/file/d/1uBsnVoVCqT8VXA-4REClR6FS8AOab2X9/view
+
+```bash
+cat datacontamination_share_26G.tar.gz.* > datacontamination_share_26G_combined.tar.gz
+tar -xzf datacontamination_share_26G_combined.tar.gz
+```
  
 ## Citation
 ```
