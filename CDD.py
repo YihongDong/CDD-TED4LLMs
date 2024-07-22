@@ -20,6 +20,17 @@ def levenshtein_distance(str1, str2):
 def strip_code(sample):
     return sample.strip().split('\n\n\n')[0] if '\n\n\n' in sample else sample.strip().split('```')[0]
 
+def truncate_prompt(sample, method_name):
+    if f'def {method_name}(' in sample:
+        output = sample.replace("'''", '"""')
+        output = output[output.find('def '+method_name):]
+        output = output[output.find('"""')+3:]
+        output = output[output.find('"""\n')+4:] if '"""\n' in output else output[output.find('"""')+3:]
+    else:
+        output = sample
+    
+    return output
+
 def tokenize_code(sample, tokenizer, length):
     return tokenizer.encode(sample)[:length] if length else tokenizer.encode(sample)
 
@@ -115,6 +126,10 @@ if __name__ == '__main__':
         for task in tasks:
             # task['samples'] temperature = 0.8 num = 50
             # task['gready_sample'] temperature = 0 num = 1
+            # Note that task['samples'] and task['gready_sample'] should not include the prompt, you would better truncate it during generation
+            # or you can call truncate_prompt to roughly remove it. 
+            # Example: task['samples'] = [truncate_prompt(sample, method_name) for sample in task['samples']]
+            
             dist, ml = get_edit_distance_distribution_star(task['samples'], task['greedy_sample'], tokenizer)
             peak = calculate_ratio(dist, args.alpha*ml) 
             Peaks.append(peak)
