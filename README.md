@@ -1,5 +1,5 @@
 # Generalization or Memorization: Data Contamination and Trustworthy Evaluation for Large Language Models
-[**Paper**](https://arxiv.org/abs/2402.15938) (Accepted to ACL), [**Big Code Models Leaderboard**](https://huggingface.co/spaces/wzxii/Memorization-or-Generation-of-Big-Code-Models-Leaderboard)
+[**Paper**](https://arxiv.org/abs/2402.15938) (Accepted to ACL), [**MGI Big Code Models Leaderboard**](https://huggingface.co/spaces/wzxii/Memorization-or-Generation-of-Big-Code-Models-Leaderboard)
 
 ## Evaluate CDD
 ```bash
