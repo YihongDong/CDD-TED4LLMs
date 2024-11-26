@@ -33,7 +33,6 @@ def minimum_indent(lines):
             m_indent = indent
     return m_indent
 
-# 检查是否需要全部缩进
 def check_overall_indent(lines):
     def check_indent(lines):
         for line in lines:
