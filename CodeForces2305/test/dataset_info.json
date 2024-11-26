@@ -51,6 +51,26 @@
     "url": {
       "dtype": "string",
       "_type": "Value"
+    },
+    "note": {
+      "dtype": "string",
+      "_type": "Value"
+    },
+    "public_test": {
+      "inputs": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      },
+      "outputs": {
+        "feature": {
+          "dtype": "string",
+          "_type": "Value"
+        },
+        "_type": "Sequence"
+      }
     }
   },
   "homepage": "",
