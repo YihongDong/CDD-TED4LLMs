@@ -25,7 +25,6 @@ def truncate(d):
                 break
     return s
 
-# 计算最小缩进
 def minimum_indent(lines):
     m_indent = 100
     for line in lines:
@@ -41,7 +40,7 @@ def check_overall_indent(lines):
             if "def" not in line and "print" not in line and "__name__" not in line and line[0] != '#' and len(line) - len(line.lstrip()) == 0:
                 return True
         return False
-    m_indent = minimum_indent(lines) # 最小缩进 （ > 0）
+    m_indent = minimum_indent(lines) 
     if len(lines) <= 1:
         return False
     elif len(lines[0]) - len(lines[0].lstrip()) == 0:
@@ -63,21 +62,49 @@ def post_process_code(prompt, code, func_name, m_indent):
     truncation = re.sub('\n+', '\n', truncation)
     lines = truncation.split('\n')
 
-    # 去除空行和与func_name相同的行，只考虑一个子函数，如果有多个子函数（例如HumanEval/39），需要修改
     # lines = list(filter(lambda x: x.strip() != "" and func_name not in x, lines))
     lines = list(filter(lambda x: x.strip() != "", lines))
-    # 将tab替换，保持tab和空格一致性
+    
     lines = list(map(lambda x: x.replace('\t', m_indent), lines))
 
     if len(lines) == 0:
         pass
     else:
         if check_overall_indent(lines):
-            # 需要全部缩进
             for i in range(len(lines)):
                 lines[i] = m_indent + lines[i] 
         elif len(lines[0]) - len(lines[0].lstrip()) == 0:
-            # 仅首行缩进
+            lines[0] = m_indent + lines[0]
+        else:
+            pass
+    return prompt.replace('\t', m_indent)+'\n'.join(lines)
+
+def build_test_method_for_CodeForces(input_output):
+    test_method = "def check(candidate):\n"
+    for idx, (input, output) in enumerate(zip(input_output['inputs'], input_output['outputs'])):
+        try:
+            test_method += "\tassert candidate(%r) == %r \n" % (input.strip(), output.strip())
+        except:
+            test_method += "\tassert candidate(%s) == %s \n" % (input, output)
+    return test_method
+
+def post_process_code_for_CodeForces(prompt, code, func_name, m_indent):
+    assert type(code) == str
+    if f"def {func_name}(" in code:
+        return code
+    truncation = truncate(code).replace('\r', '\n')
+    truncation = re.sub('\n+', '\n', truncation)
+    lines = truncation.split('\n')
+    lines = list(filter(lambda x: x.strip() != "", lines))
+    lines = list(map(lambda x: x.replace('\t', m_indent), lines))
+
+    if len(lines) == 0:
+        pass
+    else:
+        if check_overall_indent(lines):
+            for i in range(len(lines)):
+                lines[i] = m_indent + lines[i] 
+        elif len(lines[0]) - len(lines[0].lstrip()) == 0:
             lines[0] = m_indent + lines[0]
         else:
             pass
