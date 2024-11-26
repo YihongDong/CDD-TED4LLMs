@@ -4,7 +4,7 @@ import copy
 import argparse
 import sys
 import os
-from post_process import post_process_code, build_test_method_for_apps
+from post_process import post_process_code_for_CodeForces, build_test_method_for_CodeForces
 from execution import evaluate_with_test_code
 from evaluation import pass_at_K
 from datasets import load_from_disk
@@ -34,11 +34,12 @@ with open(INPUT_PATH, 'r') as f:
     for line in f:
         line = json.loads(line)
         if args.dataset == 'codeforces':
-            line["test"] =  build_test_method_for_apps(line["test"], test_case_limit = 5)
             line["entry_point"] = 'solution'
-        line["completion"] = post_process_code(prompt=line['prompt'], code=line['completion'], func_name=line['entry_point'], m_indent='    ')
+            input_output = raw_dataset_map[line["task_id"]]['test']
+            line["test"] =  build_test_method_for_CodeForces(input_output)
+            line["completion"] = post_process_code_for_CodeForces(prompt=line['prompt'], code=line['completion'], func_name=line['entry_point'], m_indent='    ')
+            line["prompt"] = "" 
         
-        line["prompt"] = ""
         handled_solutions.append(line)
 
 exec_result = evaluate_with_test_code(handled_solutions, timeout=1)
